@@ -1,6 +1,6 @@
 # alphabox
 
-A new Flutter project.
+A new Flutter project to develop an app with all the tool that I found usefull in everyday life
 
 ## Getting Started
 
