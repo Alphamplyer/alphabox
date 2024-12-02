@@ -9,12 +9,11 @@ import 'package:alphabox/animes/domain/enums/anime_type.dart';
 
 class Anime {
   final String title;
+  final String alternativeTitle;
   final String imageUrl;
   final String description;
   final int numberOfEpisodes;
   final AnimeDiffusion animeDiffusion;
-  final AnimeSeason season;
-  final int year;
   final AnimeType type;
   final AdaptationType adaptedFrom;
   final AnimeGenre genres;
@@ -23,12 +22,11 @@ class Anime {
 
   Anime({
     required this.title,
+    required this.alternativeTitle,
     required this.imageUrl,
     required this.description,
     required this.numberOfEpisodes,
     required this.animeDiffusion,
-    required this.season,
-    required this.year,
     required this.type,
     required this.adaptedFrom,
     required this.genres,
@@ -36,9 +34,30 @@ class Anime {
     required this.rating,
   });
 
+  /// Returns true if the anime is in the current season, false otherwise.
+  /// A anime without a start date is considered to be in the current season.
+  bool isInThisSeason(AnimeSeason currentSeason, int currentYear) {
+    if (animeDiffusion.start == null) {
+      return true;
+    }
+    if (animeDiffusion.start!.year != currentYear) {
+      return false;
+    }
+    if (numberOfEpisodes == -1) {
+      return true;
+    }
+
+    if (currentSeason.isInThisSeason(animeDiffusion.start!)) {
+      return true;
+    } else {
+      const int thresholdDayToBeConsideredInSeason = 15;
+      return currentSeason.isInThisSeason(animeDiffusion.start!.add(const Duration(days: thresholdDayToBeConsideredInSeason)));
+    }
+  }
+
   @override
   @override
   String toString() {
-    return 'Anime(title: $title, imageUrl: $imageUrl, description: $description, numberOfEpisodes: $numberOfEpisodes, animeDiffusion: ${animeDiffusion.toString()}, season: $season, year: $year, type: $type, adaptedFrom: ${adaptedFrom.toString()}, genres: [${genres.toString()}], studio: ${studio.toString()}, rating: ${rating.toString()})';
+    return 'Anime(title: $title, alternativeTitle: $alternativeTitle, imageUrl: $imageUrl, description: $description, numberOfEpisodes: $numberOfEpisodes, animeDiffusion: ${animeDiffusion.toString()}, type: $type, adaptedFrom: ${adaptedFrom.toString()}, genres: [${genres.toString()}], studio: ${studio.toString()}, rating: ${rating.toString()})';
   }
 }

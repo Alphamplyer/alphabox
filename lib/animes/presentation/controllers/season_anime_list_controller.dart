@@ -15,21 +15,22 @@ class SeasonAnimeListController extends ChangeNotifier {
 
   late AnimeSeason _selectedSeason;
   late int _selectedYear;
-  late List<Anime> _animeList;
+  final List<Anime> _newAnimes = [];
+  final List<Anime> _continuingAnimes = [];
 
   bool _isLoading = true;
   AnimeSortingType _selectedSortingType = AnimeSortingType.name;
-  SortingOrder _selectedSortingOrder = SortingOrder.asc;
+  SortingOrder _selectedSortingOrder = SortingOrder.ascending;
 
   AnimeSeason get selectedSeason => _selectedSeason;
   int get selectedYear => _selectedYear;
-  List<Anime> get animeList => _animeList;
+  List<Anime> get newAnimes => _newAnimes;
+  List<Anime> get continuingAnimes => _continuingAnimes;
   bool get isLoading => _isLoading;
   AnimeSortingType get selectedSortingType => _selectedSortingType;
   SortingOrder get selectedSortingOrder => _selectedSortingOrder;
 
   SeasonAnimeListController();
-
 
   Future<void> init() async {
     DateTime now = DateTime.now();
@@ -67,9 +68,23 @@ class SeasonAnimeListController extends ChangeNotifier {
   Future<void> _loadTheSeasonsAnime() async {
     _isLoading = true;
     notifyListeners();
-    _animeList = await nautiljonScapperService.getAnimesOfTheSeason(_selectedSeason, _selectedYear);
+    List<Anime> animeList = await nautiljonScapperService.getAnimesOfTheSeason(_selectedSeason, _selectedYear);
+    _splitAnimesBetweenNewAndContinuing(animeList);
+    _sort();
     _isLoading = false;
     notifyListeners();
+  }
+
+  void _splitAnimesBetweenNewAndContinuing(List<Anime> animeList) {
+    _newAnimes.clear();
+    _continuingAnimes.clear();
+    for (final anime in animeList) {
+      if (anime.isInThisSeason(_selectedSeason, _selectedYear)) {
+        _newAnimes.add(anime);
+      } else {
+        _continuingAnimes.add(anime);
+      }
+    }
   }
 
   void selectSortingType(AnimeSortingType type) {
@@ -95,6 +110,7 @@ class SeasonAnimeListController extends ChangeNotifier {
     if (method == null) {
       throw Exception("Sorting method not found");
     }
-    _animeList.sort((a, b) => method.compare(a, b, _selectedSortingOrder));
+    _newAnimes.sort((a, b) => method.compare(a, b, _selectedSortingOrder));
+    _continuingAnimes.sort((a, b) => method.compare(a, b, _selectedSortingOrder));
   }
 }

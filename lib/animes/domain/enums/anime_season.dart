@@ -5,19 +5,6 @@ enum AnimeSeason {
   summer,
   fall;
 
-  String get translateKey {
-    switch (this) {
-      case AnimeSeason.winter:
-        return 'Winter';
-      case AnimeSeason.spring:
-        return 'Spring';
-      case AnimeSeason.summer:
-        return 'Summer';
-      case AnimeSeason.fall:
-        return 'Fall';
-    }
-  }
-
   AnimeSeason get next {
     switch (this) {
       case AnimeSeason.winter:
@@ -66,4 +53,24 @@ enum AnimeSeason {
         return AnimeSeason.winter;
     }
   }
+
+  bool isInThisSeason(DateTime date) {
+    final season = fromDate(date);
+    return season == AnimeSeason.fromDate(DateTime.now());
+  }
+
+  static int getSeasonStartMonth(AnimeSeason season) {
+    switch (season) {
+      case AnimeSeason.winter:
+        return 1;
+      case AnimeSeason.spring:
+        return 4;
+      case AnimeSeason.summer:
+        return 7;
+      case AnimeSeason.fall:
+        return 10;
+    }
+  }
+
+  int get startMonth => getSeasonStartMonth(this);
 }

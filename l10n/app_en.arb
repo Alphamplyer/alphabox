@@ -1,0 +1,143 @@
+{
+  "@@locale": "en",
+  "toolsScreenTitle": "Tools",
+  "@toolsScreenTitle": {
+    "description": "The title of the Tools screen"
+  },
+  "toolsScreenAnimeCategoryTitle": "Animes",
+  "@toolsScreenAnimeCategoryTitle": {
+    "description": "The title of the Animes category"
+  },
+  "toolsScreenAnimeCategoryDescription": "For all the tools related to animes",
+  "@toolsScreenAnimeCategoryDescription": {
+    "description": "The description of the Animes category"
+  },
+  "animeOfTheSeasonToolTitle": "Animes of the season",
+  "@animeOfTheSeasonToolTitle": {
+    "description": "The title of the Seasonal Animes tool"
+  },
+  "animeOfTheSeasonToolDescription": "Discover the animes of the season, their synopsis, and their release date. You can also rate them",
+  "@animeOfTheSeasonToolDescription": {
+    "description": "The description of the Seasonal Animes tool"
+  },
+  "seasonLabel": "Season:",
+  "@seasonLabel": {
+    "description": "The name of the season field"
+  },
+  "season": "{seasonName, select, winter{Winter} spring{Spring} summer{Summer} fall{Fall} other{Unknown}}",
+  "@season": {
+    "description": "The name of the season",
+    "placeholders": {
+      "seasonName": {
+        "type": "String",
+        "example": "winter"
+      }
+    }
+  },
+  "yearLabel": "Year:",
+  "@yearLabel": {
+    "description": "The name of the year field"
+  },
+  "sortBy": "Sort by:",
+  "@sortBy": {
+    "description": "The name of the sort by field"
+  },
+  "sortingType": "{type, select, name{Name} score{Score} startDate{Release Date} endDate{Final Date} other{Unimplemented Sorting Type Translation}}",
+  "@sortingType": {
+    "description": "Sorting type",
+    "placeholders": {
+      "type": {
+        "type": "String",
+        "example": "1"
+      }
+    }
+  },
+  "sortingOrderLabel": "Sorting order:",
+  "@sortingOrderLabel": {
+    "description": "The name of the sorting order field"
+  },
+  "sortingOrder": "{order, select, ascending{Ascending} descending{Descending} other{Unimplemented Sorting Order Translation}}",
+  "@sortingOrder": {
+    "description": "Sorting order",
+    "placeholders": {
+      "order": {
+        "type": "String",
+        "example": "ascending"
+      }
+    }
+  },
+  "episodeCountLabel": "Episode count:",
+  "@episodeCountLabel": {
+    "description": "The name of the episode count field"
+  },
+  "episodeCount": "{count, plural, =0{0 episode} =1{1 episode} other{{count} episodes}}",
+  "@episodeCount": {
+    "description": "The episode count",
+    "placeholders": {
+      "count": {
+        "type": "int",
+        "example": "5"
+      }
+    }
+  },
+  "unknown": "Unknown",
+  "@unknown": {
+    "description": "The word for unknown"
+  },
+  "score": "Score:",
+  "@score": {
+    "description": "The score"
+  },
+  "synopsis": "Synopsis:",
+  "@synopsis": {
+    "description": "The synopsis"
+  },
+  "releaseDate": "Release date:",
+  "@releaseDate": {
+    "description": "The release date"
+  },
+  "finalDate": "Final date:",
+  "@finalDate": {
+    "description": "The final date"
+  },
+  "genresLabel": "Genres:",
+  "@genresLabel": {
+    "description": "The name of the genres field"
+  },
+  "newAnimesSectionTitle": "New animes",
+  "@newAnimesSectionTitle": {
+    "description": "The title of the New Animes section"
+  },
+  "continuingAnimesSectionTitle": "Continuing animes",
+  "@continuingAnimesSectionTitle": {
+    "description": "The title of the Continuing Animes section"
+  },
+  "animeTypeLabel": "Type:",
+  "@animeTypeLabel": {
+    "description": "The name of the type field"
+  },
+  "animeType": "{type, select, serie{Serie} movie{Movie} ova{OVA} ona{ONA} special{Special} other{Other} unknown{Unknown}}",
+  "@animeType": {
+    "description": "The name of the type",
+    "placeholders": {
+      "type": {
+        "type": "String",
+        "example": "tv"
+      }
+    }
+  },
+  "adaptedFrom": "Adaptation type:",
+  "@adaptedFrom": {
+    "description": "The name of the adaptation type field"
+  },
+  "adaptationType": "{type, select, manga{Manga} lightNovel{Light Novel} videoGame{Video Game} transMediaProject{Trans-media Project} novel{Novel} originalWork{Original Work} visualNovel{Visual Novel} other{Other} unknown{Unknown}}",
+  "@adaptationType": {
+    "description": "The name of the adaptation type",
+    "placeholders": {
+      "type": {
+        "type": "String",
+        "example": "manga"
+      }
+    }
+  }
+}

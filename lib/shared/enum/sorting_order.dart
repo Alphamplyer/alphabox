@@ -1,4 +1,4 @@
 enum SortingOrder {
-  asc,
-  desc,
+  ascending,
+  descending,
 }

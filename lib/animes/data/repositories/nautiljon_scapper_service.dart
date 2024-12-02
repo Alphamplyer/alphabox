@@ -15,16 +15,12 @@ import 'package:universal_html/html.dart';
 
 class NautiljonScapperService implements AnimeScrapperService {
   final ScrapperService _scrapperService = ScrapperService();
-  late AnimeSeason _season;
-  late int _year;
   List<Anime> _animes = [];
 
   @override
   Future<List<Anime>> getAnimesOfTheSeason(AnimeSeason season, int year) async {
     await _scrapperService.load(NautiljonHelper.getNautiljonSeasonAnimeUrl(season, year));
     List<Element> animeElements = _scrapperService.querySelectorAll('.elt');
-    _season = season;
-    _year = year;
     _animes = animeElements.map((elt) {
       Anime anime = _parseAnime(elt);
       return anime;
@@ -34,6 +30,7 @@ class NautiljonScapperService implements AnimeScrapperService {
 
   Anime _parseAnime(Element element) {
     final String title = _parseTitle(element);
+    final String alternativeTitle = _parseAlternativeTitle(element);
     final String imageUrl = _parseImageUrl(element);
     final String description = _parseDescription(element);
     final _NautiljonAnimeTopInfo topInfo = _parseTopInfo(element);
@@ -41,12 +38,11 @@ class NautiljonScapperService implements AnimeScrapperService {
 
     return Anime(
       title: title,
+      alternativeTitle: alternativeTitle,
       imageUrl: imageUrl,
       description: description,
       numberOfEpisodes: topInfo.numberOfEpisodes,
       animeDiffusion: animeDiffusion,
-      season: _season,
-      year: _year,
       type: topInfo.type,
       adaptedFrom: topInfo.adaptedFrom,
       genres: topInfo.genres,
@@ -58,6 +54,11 @@ class NautiljonScapperService implements AnimeScrapperService {
   String _parseTitle(Element element) {
     Element? titleElement = element.querySelector('div.title > h2 > a');
     return titleElement?.innerHtml?.trim() ?? 'No title'; 
+  }
+
+  String _parseAlternativeTitle(Element element) {
+    Element? alternativeTitleElement = element.querySelector('div.title > p');
+    return alternativeTitleElement?.innerHtml?.trim() ?? 'No alternative title';
   }
 
   String _parseImageUrl(Element element) {

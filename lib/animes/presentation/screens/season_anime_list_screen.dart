@@ -1,8 +1,10 @@
 import 'package:alphabox/animes/domain/enums/anime_season.dart';
 import 'package:alphabox/animes/presentation/configs/anime_sorting_methods.dart';
 import 'package:alphabox/animes/presentation/controllers/season_anime_list_controller.dart';
+import 'package:alphabox/animes/presentation/widgets/anime_list_view.dart';
 import 'package:alphabox/shared/enum/sorting_order.dart';
-import 'package:cached_network_image/cached_network_image.dart';
+import 'package:alphabox/shared/extensions/app_theme_extension.dart';
+import 'package:alphabox/shared/extensions/build_context_extension.dart';
 import 'package:flutter/material.dart';
 
 class SeasonAnimeListScreen extends StatefulWidget {
@@ -14,6 +16,8 @@ class SeasonAnimeListScreen extends StatefulWidget {
 
 class _SeasonAnimeListScreenState extends State<SeasonAnimeListScreen> {
   final SeasonAnimeListController _controller = SeasonAnimeListController();
+  final GlobalKey _newAnimesKey = GlobalKey();
+  final GlobalKey _continuingAnimesKey = GlobalKey();
 
   @override
   void initState() {
@@ -24,6 +28,43 @@ class _SeasonAnimeListScreenState extends State<SeasonAnimeListScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text(context.appLocalizations.animeOfTheSeasonToolTitle),
+        actions: [
+          Builder(
+            builder: (context) {
+              return IconButton(
+                icon: const Icon(Icons.list),
+                onPressed: () => Scaffold.of(context).openEndDrawer(),
+              );
+            }
+          ),
+        ],
+      ),
+      endDrawer: Builder(
+        builder: (context) {
+          return Drawer(
+            child: ListView(
+              children: [
+                ListTile(
+                  title: Text(context.appLocalizations.newAnimesSectionTitle),
+                  onTap: () {
+                    Scrollable.ensureVisible(_newAnimesKey.currentContext!);
+                    Scaffold.of(context).closeEndDrawer();
+                  },
+                ),
+                ListTile(
+                  title: Text(context.appLocalizations.continuingAnimesSectionTitle),
+                  onTap: () {
+                    Scrollable.ensureVisible(_continuingAnimesKey.currentContext!);
+                    Scaffold.of(context).closeEndDrawer();
+                  },
+                ),
+              ],
+            ),
+          );
+        }
+      ),
       body: SafeArea(
         child: Column(
           children: [
@@ -31,97 +72,176 @@ class _SeasonAnimeListScreenState extends State<SeasonAnimeListScreen> {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.symmetric(horizontal: 8 , vertical: 16),
                   decoration: BoxDecoration(
-                    color: Colors.blueGrey[700],
-                    
+                    color: context.theme.appColors.tertiaryBackgroundColor,
                   ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back),
-                        onPressed: _controller.previousSeason,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.arrow_back,
+                                  size: 20,
+                                ),
+                                onPressed: _controller.previousSeason,
+                              ),
+                              const Text(
+                                "previous season",
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ]
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text(
+                              "${context.appLocalizations.season(_controller.selectedSeason.name)} ${_controller.selectedYear}",
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Text(
+                                "next season",
+                                style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              IconButton(
+                                icon: const Icon(
+                                  Icons.arrow_forward,
+                                  size: 20,
+                                ),
+                                onPressed: _controller.nextSeason,
+                              ),
+                            ]
+                          ),
+                        ],
                       ),
-                      AnimatedBuilder(
-                        animation: _controller,
-                        builder: (context, widget) {
-                          return DropdownButton<AnimeSeason>(
-                            value: _controller.selectedSeason,
-                            onChanged: (value) => _controller.setSelectedSeason(value ?? _controller.selectedSeason),
-                            items: AnimeSeason.values
-                              .map((e) => DropdownMenuItem(
-                                value: e,
-                                child: Text(e.toString()),
-                              ))
-                              .toList(),
-                          );
-                        }
+                      
+                      Divider(
+                        color: context.theme.appColors.primaryColor,
                       ),
-                      AnimatedBuilder(
-                        animation: _controller,
-                        builder: (context, widget) {
-                          return DropdownButton<int>(
-                            value: _controller.selectedYear,
-                            onChanged: (value) => _controller.setSelectedYear(value ?? _controller.selectedYear),
-                            items: List.generate(5, (index) => index + DateTime.now().year - 3)
-                              .map((e) => DropdownMenuItem(
-                                value: e,
-                                child: Text(e.toString()),
-                              ))
-                              .toList(),
-                          );
-                        }
+                      
+                      Text(
+                        "${context.appLocalizations.seasonLabel} ",
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.arrow_forward),
-                        onPressed: _controller.nextSeason,
+                      const SizedBox(height: 4),
+                      AnimatedBuilder(animation: _controller, builder: (context, widget) {
+                        return SegmentedButton(
+                          emptySelectionAllowed: false,
+                          multiSelectionEnabled: false,
+                          selected: {_controller.selectedSeason},
+                          onSelectionChanged: (value) => _controller.setSelectedSeason(value.first),
+                          segments: List.generate(AnimeSeason.values.length, (index) {
+                            return ButtonSegment(
+                              value: AnimeSeason.values[index],
+                              label: Text(context.appLocalizations.season(AnimeSeason.values[index].name)),
+                              enabled: _controller.selectedSeason != AnimeSeason.values[index],
+                            );
+                          }),
+                        );
+                      }),
+                      
+                      const SizedBox(height: 8),
+                      Text(
+                        "${context.appLocalizations.yearLabel} ",
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Colors.blueGrey[900],
-                    
-                  ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      const Text("Sort by: "),
-                      AnimatedBuilder(
-                        animation: _controller,
-                        builder: (context, widget) {
-                          return DropdownButton<AnimeSortingType>(
-                            value: _controller.selectedSortingType,
-                            onChanged: (value) => _controller.selectSortingType(value ?? _controller.selectedSortingType),
-                            items: AnimeSortingType.values
-                              .map((e) => DropdownMenuItem(
-                                value: e,
-                                child: Text(e.toString()),
-                              ))
-                              .toList(),
-                          );
-                        }
+                      const SizedBox(height: 4),
+                      AnimatedBuilder(animation: _controller, builder: (context, widget) {
+                        return SegmentedButton(
+                          emptySelectionAllowed: false,
+                          multiSelectionEnabled: false,
+                          selected: {_controller.selectedYear},
+                          onSelectionChanged: (value) => _controller.setSelectedYear(value.first),
+                          segments: List.generate(5, (index) => index + DateTime.now().year - 3)
+                            .map((year) => ButtonSegment(
+                              value: year,
+                              label: Text(year.toString()),
+                              enabled: _controller.selectedYear != year,
+                            ))
+                            .toList(),
+                        );
+                      }),
+                      const SizedBox(height: 8),
+                      
+                      Divider(
+                        color: context.theme.appColors.primaryColor,
                       ),
-                      AnimatedBuilder(
-                        animation: _controller,
-                        builder: (context, widget) {
-                          return DropdownButton<SortingOrder>(
-                            value: _controller.selectedSortingOrder,
-                            onChanged: (value) => _controller.selectSortingOrder(value ?? _controller.selectedSortingOrder),
-                            items: SortingOrder.values
-                              .map((e) => DropdownMenuItem(
-                                value: e,
-                                child: Text(e.toString()),
-                              ))
-                              .toList(),
-                          );
-                        }
+
+                      const SizedBox(height: 8),
+                      Text (
+                        "${context.appLocalizations.sortBy} ",
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
+                      const SizedBox(height: 4),
+                      AnimatedBuilder(animation: _controller, builder: (context, widget) {
+                        return SegmentedButton(
+                          emptySelectionAllowed: false,
+                          multiSelectionEnabled: false,
+                          selected: {_controller.selectedSortingType},
+                          onSelectionChanged: (value) => _controller.selectSortingType(value.first),
+                          segments: List.generate(AnimeSortingType.values.length, (index) {
+                            return ButtonSegment(
+                              value: AnimeSortingType.values[index],
+                              label: Text(context.appLocalizations.sortingType(AnimeSortingType.values[index].name)),
+                              enabled: _controller.selectedSortingType != AnimeSortingType.values[index],
+                            );
+                          }),
+                        );
+                      }),
+                      
+                      const SizedBox(height: 8),
+                      Text (
+                        "${context.appLocalizations.sortingOrderLabel} ",
+                        style: const TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      AnimatedBuilder(animation: _controller, builder: (context, widget) {
+                        return SegmentedButton(
+                          emptySelectionAllowed: false,
+                          multiSelectionEnabled: false,
+                          selected: {_controller.selectedSortingOrder},
+                          onSelectionChanged: (value) => _controller.selectSortingOrder(value.first),
+                          segments: List.generate(SortingOrder.values.length, (index) {
+                            return ButtonSegment(
+                              value: SortingOrder.values[index],
+                              label: Text(context.appLocalizations.sortingOrder(SortingOrder.values[index].name)),
+                              enabled: _controller.selectedSortingOrder != SortingOrder.values[index],
+                            );
+                          }),
+                        );
+                      }),
                     ],
                   ),
                 ),
@@ -136,15 +256,19 @@ class _SeasonAnimeListScreenState extends State<SeasonAnimeListScreen> {
                   }
                   return SingleChildScrollView(
                     child: Column(
-                      children: List.generate(_controller.animeList.length, (int index) {
-                        final anime = _controller.animeList[index];
-                        return ListTile(
-                          key: ValueKey(anime.title),
-                          title: Text(anime.title),
-                          subtitle: Text(anime.description),
-                          leading: CachedNetworkImage(imageUrl: anime.imageUrl, width: 165, height: 250),
-                        );
-                      }),
+                      children: [
+                        AnimeListView(
+                          sectionKey: _newAnimesKey,
+                          title: context.appLocalizations.newAnimesSectionTitle,
+                          animes: _controller.newAnimes,
+                        ),
+                        AnimeListView(
+                          sectionKey: _continuingAnimesKey,
+                          title: context.appLocalizations.continuingAnimesSectionTitle,
+                          animes: _controller.continuingAnimes,
+                        ),
+                        const SizedBox(height: 16),
+                      ],
                     )
                   );
                 }

@@ -11,6 +11,6 @@ class SortingMethod<T1, T2> {
 
   int compare(T1 a, T2 b, SortingOrder sortingOrder) {
     int result = _compareFunction(a, b);
-    return sortingOrder == SortingOrder.asc ? result : -result;
+    return sortingOrder == SortingOrder.ascending ? result : -result;
   }  
 }

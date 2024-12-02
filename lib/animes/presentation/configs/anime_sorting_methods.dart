@@ -23,10 +23,12 @@ class AnimeSorting {
   static final SortingMethod<Anime, Anime> _startDateSortingAlgorithm = SortingMethod(
     name: "sorting_method.by_start_date",
     compareFunction: (Anime a, Anime b) {
-      if (a.animeDiffusion.start == null) {
-        return -1;
-      } else if (b.animeDiffusion.start == null) {
+      if (a.animeDiffusion.start == null && b.animeDiffusion.start == null) {
+        return 0;
+      } else if (a.animeDiffusion.start == null) {
         return 1;
+      } else if (b.animeDiffusion.start == null) {
+        return -1;
       } else {
         return a.animeDiffusion.start!.compareTo(b.animeDiffusion.start!);
       }
@@ -36,12 +38,14 @@ class AnimeSorting {
   static final SortingMethod<Anime, Anime> _endDateSortingAlgorithm = SortingMethod(
     name: "sorting_method.by_end_date",
     compareFunction: (Anime a, Anime b) {
-      if (a.animeDiffusion.end == null) {
-        return -1;
-      } else if (b.animeDiffusion.end == null) {
+      if (a.animeDiffusion.end == null && b.animeDiffusion.end == null) {
+        return 0;
+      } else if (a.animeDiffusion.end == null) {
         return 1;
+      } else if (b.animeDiffusion.end == null) {
+        return -1;
       } else {
-        return b.animeDiffusion.end!.compareTo(a.animeDiffusion.end!);
+        return a.animeDiffusion.end!.compareTo(b.animeDiffusion.end!);
       }
     },
   );
