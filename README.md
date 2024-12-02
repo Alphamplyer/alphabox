@@ -2,15 +2,8 @@
 
 A new Flutter project to develop an app with all the tool that I found usefull in everyday life
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## TODO & BUGS: make/fix them all!
+- Can't change the theme mode, it's always the system's one.
+- In light mod, everything is dark, need to change that... umh
+- On mobile, filters take all the place, hide them !
+- On desktop and tablets (large side), filters button are too large, contraints growing.
