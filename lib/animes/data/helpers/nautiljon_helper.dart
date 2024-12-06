@@ -48,13 +48,23 @@ class NautiljonHelper {
     };
   }
 
-  static AnimeDiffusion getAnimeDiffusionFromNautiljonText(String text) {
+  static AnimeDiffusionBuilder parseNautiljonDiffussionDatesToAnimeDiffusionBuilder(String text, AnimeDiffusionBuilder animeDiffusionBuilder) {
     List<String> parts = text.split(' → ');
-    if (parts.isEmpty) return AnimeDiffusion(start: null, end: null);
+    
+    if (parts.isEmpty) {
+      return animeDiffusionBuilder;
+    }
+
     DateTime? startDate = getDateTimeFromNautiljonText(parts[0]);
-    if (parts.length == 1) return AnimeDiffusion(start: startDate, end: null);
+    animeDiffusionBuilder.withStart(startDate);
+    
+    if (parts.length == 1) {
+      return animeDiffusionBuilder;
+    }
+
     DateTime? endDate = getDateTimeFromNautiljonText(parts[1]);
-    return AnimeDiffusion(start: startDate!, end: endDate);
+    animeDiffusionBuilder.withEnd(endDate);
+    return animeDiffusionBuilder;
   }
 
   static DateTime? getDateTimeFromNautiljonText(String dateStr) {

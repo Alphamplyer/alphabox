@@ -6,6 +6,7 @@ import 'package:alphabox/shared/enum/sorting_order.dart';
 import 'package:alphabox/shared/extensions/app_theme_extension.dart';
 import 'package:alphabox/shared/extensions/build_context_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:url_launcher/link.dart';
 
 class SeasonAnimeListScreen extends StatefulWidget {
   const SeasonAnimeListScreen({super.key});
@@ -68,17 +69,17 @@ class _SeasonAnimeListScreenState extends State<SeasonAnimeListScreen> {
       body: SafeArea(
         child: Column(
           children: [
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8 , vertical: 16),
-                  decoration: BoxDecoration(
-                    color: context.theme.appColors.tertiaryBackgroundColor,
-                  ),
+            Container(
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: context.theme.appColors.tertiaryBackgroundColor,
+              ),
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8 , vertical: 16),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width > 600 ? 600 : double.infinity,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
@@ -94,7 +95,7 @@ class _SeasonAnimeListScreenState extends State<SeasonAnimeListScreen> {
                                 ),
                                 onPressed: _controller.previousSeason,
                               ),
-                              const Text(
+                              if (MediaQuery.of(context).size.width > 600) const Text(
                                 "previous season",
                                 style: TextStyle(
                                   fontSize: 13,
@@ -105,18 +106,23 @@ class _SeasonAnimeListScreenState extends State<SeasonAnimeListScreen> {
                           ),
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text(
-                              "${context.appLocalizations.season(_controller.selectedSeason.name)} ${_controller.selectedYear}",
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
+                            child: AnimatedBuilder(
+                              animation: _controller,
+                              builder: (context, widget) {
+                                return Text(
+                                  "${context.appLocalizations.season(_controller.selectedSeason.name)} ${_controller.selectedYear}",
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                );
+                              }
                             ),
                           ),
                           Row(
                             mainAxisSize: MainAxisSize.min,
                             children: [
-                              const Text(
+                              if (MediaQuery.of(context).size.width > 600) const Text(
                                 "next season",
                                 style: TextStyle(
                                   fontSize: 13,
@@ -192,7 +198,7 @@ class _SeasonAnimeListScreenState extends State<SeasonAnimeListScreen> {
                       Divider(
                         color: context.theme.appColors.primaryColor,
                       ),
-
+                              
                       const SizedBox(height: 8),
                       Text (
                         "${context.appLocalizations.sortBy} ",
@@ -245,7 +251,7 @@ class _SeasonAnimeListScreenState extends State<SeasonAnimeListScreen> {
                     ],
                   ),
                 ),
-              ],
+              ),
             ),
             Flexible(
               child: AnimatedBuilder(
@@ -255,20 +261,60 @@ class _SeasonAnimeListScreenState extends State<SeasonAnimeListScreen> {
                     return const Center(child: CircularProgressIndicator());
                   }
                   return SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        AnimeListView(
-                          sectionKey: _newAnimesKey,
-                          title: context.appLocalizations.newAnimesSectionTitle,
-                          animes: _controller.newAnimes,
-                        ),
-                        AnimeListView(
-                          sectionKey: _continuingAnimesKey,
-                          title: context.appLocalizations.continuingAnimesSectionTitle,
-                          animes: _controller.continuingAnimes,
-                        ),
-                        const SizedBox(height: 16),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 16),
+                      child: Column(
+                        children: [
+                          AnimeListView(
+                            sectionKey: _newAnimesKey,
+                            title: context.appLocalizations.newAnimesSectionTitle,
+                            animes: _controller.newAnimes,
+                          ),
+                          AnimeListView(
+                            sectionKey: _continuingAnimesKey,
+                            title: context.appLocalizations.continuingAnimesSectionTitle,
+                            animes: _controller.continuingAnimes,
+                          ),
+                          const SizedBox(height: 32),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "Scrapped from Nautiljon (",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                              Link(
+                                target: LinkTarget.blank,
+                                uri: Uri.parse("https://www.nautiljon.com"),
+                                builder: (context, followLink) {
+                                  return MouseRegion(
+                                    cursor: SystemMouseCursors.click,
+                                    child: GestureDetector(
+                                      onTap: followLink,
+                                      child: const Text(
+                                        "https://www.nautiljon.com",
+                                        style: TextStyle(
+                                          color: Colors.blue,
+                                          fontSize: 16
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                              const Text(
+                                ")",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 32),
+                        ],
+                      ),
                     )
                   );
                 }

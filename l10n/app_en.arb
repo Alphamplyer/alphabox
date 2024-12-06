@@ -139,5 +139,61 @@
         "example": "manga"
       }
     }
+  },
+  "studioLabel": "Studio:",
+  "@studioLabel": {
+    "description": "The name of the studio field"
+  },
+  "estimated": "Estimated",
+  "@estimated": {
+    "description": "The word for estimated"
+  },
+  "settingsScreenTitle": "Settings",
+  "@settingsScreenTitle": {
+    "description": "The title of the Settings screen"
+  },
+  "settingsScreenLanguageCategoryTitle": "Language",
+  "@settingsScreenLanguageCategoryTitle": {
+    "description": "The title of the Language category"
+  },
+  "settingsScreenLanguageCategoryDescription": "For all the settings related to the language",
+  "@settingsScreenLanguageCategoryDescription": {
+    "description": "The description of the Language category"
+  },
+  "languageLabel": "Language:",
+  "@languageLabel": {
+    "description": "The name of the language field"
+  },
+  "language": "{language, select, en{English} fr{French} other{Unknown}}",
+  "@language": {
+    "description": "The name of the language",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "en"
+      }
+    }
+  },
+  "settingsScreenThemeCategoryTitle": "Theme",
+  "@settingsScreenThemeCategoryTitle": {
+    "description": "The title of the Theme category"
+  },
+  "settingsScreenThemeCategoryDescription": "For all the settings related to the theme",
+  "@settingsScreenThemeCategoryDescription": {
+    "description": "The description of the Theme category"
+  },
+  "themeLabel": "Theme:",
+  "@themeLabel": {
+    "description": "The name of the theme field"
+  },
+  "theme": "{theme, select, light{Light} dark{Dark} system{System} other{Unknown}}",
+  "@theme": {
+    "description": "The name of the theme",
+    "placeholders": {
+      "theme": {
+        "type": "String",
+        "example": "light"
+      }
+    }
   }
 }

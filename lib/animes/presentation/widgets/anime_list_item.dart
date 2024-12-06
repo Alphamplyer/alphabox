@@ -1,5 +1,6 @@
 
 import 'package:alphabox/animes/domain/entities/anime.dart';
+import 'package:alphabox/animes/presentation/screens/anime_screen.dart';
 import 'package:alphabox/animes/presentation/widgets/anime_genres_view.dart';
 import 'package:alphabox/shared/extensions/app_theme_extension.dart';
 import 'package:alphabox/shared/extensions/build_context_extension.dart';
@@ -11,6 +12,16 @@ class AnimeListItem extends StatelessWidget {
   const AnimeListItem({super.key, required this.anime});
 
   final Anime anime;
+
+  String formatFinalDate(BuildContext context) {
+    if (anime.animeDiffusion.isEndDateEstimated) {
+      return '${DateFormat.yMd().format(anime.animeDiffusion.end!)} (${context.appLocalizations.estimated})';
+    } else if (anime.animeDiffusion.end == null) {
+      return '?';
+    } else {
+      return DateFormat.yMd().format(anime.animeDiffusion.end!);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,13 +46,24 @@ class AnimeListItem extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  anime.title,
-                  style: const TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
+                MouseRegion(
+                  cursor: SystemMouseCursors.click,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => AnimeScreen(anime: anime)
+                      ));
+                    },
+                    child: Text(
+                      anime.title,
+                      style: const TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ),
+                ),                
                 Text(
                   anime.alternativeTitle,
                   style: const TextStyle(
@@ -59,40 +81,63 @@ class AnimeListItem extends StatelessWidget {
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  child: Wrap(
+                    alignment: WrapAlignment.spaceBetween,
                     children: [
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
+                      Wrap(
                         children: [
-                          Text(
-                            "${context.appLocalizations.animeTypeLabel} ",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "${context.appLocalizations.animeTypeLabel} ",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(context.appLocalizations.animeType(anime.type.name)),
+                              const SizedBox(width: 8),
+                            ],
                           ),
-                          Text(context.appLocalizations.animeType(anime.type.name)),
-                          const SizedBox(width: 8),
-                          Text(
-                            "${context.appLocalizations.episodeCountLabel} ",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                            ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "${context.appLocalizations.episodeCountLabel} ",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(
+                                anime.isNumberOfEpisodesKnown
+                                  ? context.appLocalizations.episodeCount(anime.numberOfEpisodes)
+                                  : context.appLocalizations.unknown,
+                              ),
+                              const SizedBox(width: 8),
+                            ],
                           ),
-                          Text(
-                            anime.numberOfEpisodes == -1 
-                              ? context.appLocalizations.unknown
-                              : context.appLocalizations.episodeCount(anime.numberOfEpisodes),
-                          ),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                "${context.appLocalizations.studioLabel} ",
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              Text(anime.studio.name),
+                              const SizedBox(width: 8),
+                            ],
+                          )
                         ],
                       ),
                       Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const SizedBox(width: 8),
                           Text(
                             "${context.appLocalizations.adaptedFrom} ",
                             style: const TextStyle(
@@ -153,41 +198,47 @@ class AnimeListItem extends StatelessWidget {
             decoration: BoxDecoration(
               color: context.theme.appColors.secondaryColor,
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Wrap(
+              alignment: WrapAlignment.spaceBetween,
               children: [
-                Row(
-                  mainAxisSize: MainAxisSize.min,
+                Wrap(
                   children: [
-                    Text(
-                      "${context.appLocalizations.releaseDate} ",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "${context.appLocalizations.releaseDate} ",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(
+                          anime.animeDiffusion.start == null 
+                            ? '?'
+                            : DateFormat.yMd().format(anime.animeDiffusion.start!),
+                        ),
+                        const SizedBox(width: 8),
+                      ],
                     ),
-                    Text(
-                      anime.animeDiffusion.start == null 
-                        ? '?'
-                        : DateFormat.yMd().format(anime.animeDiffusion.start!),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      "${context.appLocalizations.finalDate} ",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      anime.animeDiffusion.end == null 
-                        ? '?' 
-                        : DateFormat.yMd().format(anime.animeDiffusion.end!),
-                    ),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          "${context.appLocalizations.finalDate} ",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Text(formatFinalDate(context)),
+                        const SizedBox(width: 8),
+                      ],
+                    )
+                    
                   ]
                 ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const SizedBox(width: 8),
                     Text(
                       "${context.appLocalizations.score} ",
                       style: const TextStyle(

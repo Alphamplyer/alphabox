@@ -34,15 +34,16 @@ class NautiljonScapperService implements AnimeScrapperService {
     final String imageUrl = _parseImageUrl(element);
     final String description = _parseDescription(element);
     final _NautiljonAnimeTopInfo topInfo = _parseTopInfo(element);
-    final AnimeDiffusion animeDiffusion = _parseAnimeDiffusion(element);
+    final AnimeDiffusionBuilder animeDiffusionBuilder = _parseAnimeDiffusion(element);
+    animeDiffusionBuilder.withNumberOfEpisodes(topInfo.numberOfEpisodes);
+    print("$title: $animeDiffusionBuilder");
 
     return Anime(
       title: title,
       alternativeTitle: alternativeTitle,
       imageUrl: imageUrl,
       description: description,
-      numberOfEpisodes: topInfo.numberOfEpisodes,
-      animeDiffusion: animeDiffusion,
+      animeDiffusion: animeDiffusionBuilder.build(),
       type: topInfo.type,
       adaptedFrom: topInfo.adaptedFrom,
       genres: topInfo.genres,
@@ -161,13 +162,14 @@ class NautiljonScapperService implements AnimeScrapperService {
     return AnimeGenre(values: genres);
   }
 
-  AnimeDiffusion _parseAnimeDiffusion(Element element) {
+  AnimeDiffusionBuilder _parseAnimeDiffusion(Element element) {
     Element? diffusionElement = element.querySelector('div.infos2 > span:nth-child(1)');
+    AnimeDiffusionBuilder builder = AnimeDiffusionBuilder();
     if (diffusionElement == null) {
-      return AnimeDiffusion.defaultDiffusion();
+      return builder;
     }
     String diffusionText = diffusionElement.innerHtml?.trim() ?? '';
-    return NautiljonHelper.getAnimeDiffusionFromNautiljonText(diffusionText);
+    return NautiljonHelper.parseNautiljonDiffussionDatesToAnimeDiffusionBuilder(diffusionText, builder);
   }
 }
 

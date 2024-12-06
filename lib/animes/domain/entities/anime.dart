@@ -12,7 +12,6 @@ class Anime {
   final String alternativeTitle;
   final String imageUrl;
   final String description;
-  final int numberOfEpisodes;
   final AnimeDiffusion animeDiffusion;
   final AnimeType type;
   final AdaptationType adaptedFrom;
@@ -20,12 +19,14 @@ class Anime {
   final AnimationStudio studio;
   final AnimeRating rating;
 
+  bool get isNumberOfEpisodesKnown => animeDiffusion.numberOfEpisodes != -1;
+  int get numberOfEpisodes => animeDiffusion.numberOfEpisodes;
+
   Anime({
     required this.title,
     required this.alternativeTitle,
     required this.imageUrl,
     required this.description,
-    required this.numberOfEpisodes,
     required this.animeDiffusion,
     required this.type,
     required this.adaptedFrom,

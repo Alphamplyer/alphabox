@@ -139,5 +139,61 @@
         "example": "manga"
       }
     }
+  },
+  "studioLabel": "Studio",
+  "@studioLabel": {
+    "description": "Le nom du champ studio"
+  },
+  "estimated": "Estimé",
+  "@estimated": {
+    "description": "Le mot estimé"
+  },
+  "settingsScreenTitle": "Paramètres",
+  "@settingsScreenTitle": {
+    "description": "Le titre de l'écran Paramètres"
+  },
+  "settingsScreenLanguageCategoryTitle": "Langues",
+  "@settingsScreenLanguageCategoryTitle": {
+    "description": "Le titre de la catégorie Langues"
+  },
+  "settingsScreenLanguageCategoryDescription": "Pour tous les paramètres en lien avec la langue",
+  "@settingsScreenLanguageCategoryDescription": {
+    "description": "La description de la catégorie Langues"
+  },
+  "languageLabel": "Langue:",
+  "@languageLabel": {
+    "description": "Le nom du champ langue"
+  },
+  "language": "{language, select, en{Anglais} fr{Français} other{Inconnu}}",
+  "@language": {
+    "description": "Le nom de la langue",
+    "placeholders": {
+      "language": {
+        "type": "String",
+        "example": "en"
+      }
+    }
+  },
+  "settingsScreenThemeCategoryTitle": "Thème",
+  "@settingsScreenThemeCategoryTitle": {
+    "description": "Le titre de la catégorie Thème"
+  },
+  "settingsScreenThemeCategoryDescription": "Pour tous les paramètres en lien avec le thème",
+  "@settingsScreenThemeCategoryDescription": {
+    "description": "La description de la catégorie Thème"
+  },
+  "themeLabel": "Thème:",
+  "@themeLabel": {
+    "description": "Le nom du champ thème"
+  },
+  "theme": "{theme, select, light{Lumineux} dark{Sombre} system{Système} other{Inconnu}}",
+  "@theme": {
+    "description": "Le nom du thème",
+    "placeholders": {
+      "theme": {
+        "type": "String",
+        "example": "light"
+      }
+    }
   }
 }

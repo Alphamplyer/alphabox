@@ -1,4 +1,5 @@
 import 'package:alphabox/animes/presentation/screens/season_anime_list_screen.dart';
+import 'package:alphabox/settings/screen/settings_screen.dart';
 import 'package:alphabox/shared/extensions/app_theme_extension.dart';
 import 'package:alphabox/shared/extensions/build_context_extension.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,17 @@ class ToolsPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(context.appLocalizations.toolsScreenTitle),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const SettingsScreen()),
+              );
+            },
+          ),
+        ],
       ),
       body: SingleChildScrollView(
         child: Padding(
