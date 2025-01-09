@@ -1,5 +1,6 @@
 
 import 'dart:async';
+import 'dart:io';
 
 import 'package:alphabox/animes/data/repositories/nautiljon_scapper_service.dart';
 import 'package:alphabox/animes/domain/entities/anime.dart';
@@ -7,8 +8,10 @@ import 'package:alphabox/animes/domain/enums/anime_season.dart';
 import 'package:alphabox/animes/domain/repositories/anime_scrapper_service.dart';
 import 'package:alphabox/animes/presentation/configs/anime_sorting_methods.dart';
 import 'package:alphabox/shared/enum/sorting_order.dart';
-import 'package:flutter/foundation.dart';
+import 'package:alphabox/shared/extensions/string_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 class SeasonAnimeListController extends ChangeNotifier {
   final AnimeScrapperService nautiljonScapperService = NautiljonScapperService();
@@ -112,5 +115,42 @@ class SeasonAnimeListController extends ChangeNotifier {
     }
     _newAnimes.sort((a, b) => method.compare(a, b, _selectedSortingOrder));
     _continuingAnimes.sort((a, b) => method.compare(a, b, _selectedSortingOrder));
+  }
+
+  Future<void> exportFinalDateOrderedAnimes(Locale locale, AppLocalizations appLocalization) async {
+    final method = AnimeSorting.allSortingMethods[AnimeSortingType.endDate];
+    List<Anime> sortedAnimesByEndDate = List.from(_newAnimes.where((anime) => anime.animeDiffusion.hasEndingDate))..toList();
+    sortedAnimesByEndDate.sort((a, b) => method!.compare(a, b, SortingOrder.ascending));
+
+    IOSink writeStream = File("${Directory.current.path}/animes.txt").openWrite();
+
+    Anime? previousAnime;
+    for (final anime in sortedAnimesByEndDate) {
+      if (previousAnime == null || previousAnime.animeDiffusion.end != anime.animeDiffusion.end) {
+        writeStream.write(
+          "${Platform.lineTerminator}**${DateFormat.MMMMEEEEd(locale.countryCode).format(anime.animeDiffusion.end!).capitalize()} :**${Platform.lineTerminator}",
+        );
+      }
+      String formattedAnime = await formatAnime(anime, locale, appLocalization);
+      writeStream.write(formattedAnime);
+      previousAnime = anime;
+    }
+
+    await writeStream.flush();
+    await writeStream.close();
+
+    writeStream.done.catchError((e) {
+      print('Error writing file: $e');
+    });
+  }
+
+  Future<String> formatAnime(Anime anime, Locale locale, AppLocalizations appLocalization) async {
+    return "[${appLocalization.animeType(anime.type.name)}] [${anime.title}](${anime.nautiljonUrl}) ${Platform.lineTerminator}";
+    // AnimeDiffuserUrls diffusionUrl = await NautiljonHelper.getExternalUrlFromNautiljonUrl(anime.nautiljonUrl);
+    // if (diffusionUrl.hasAtLeastOneUrl) {
+    //   return "- [${diffusionUrl.formatToMarkdownLinks()}] [${appLocalization.animeType(anime.type.name)}] ${anime.title} ${Platform.lineTerminator}";
+    // }
+
+    // return "- [${appLocalization.animeType(anime.type.name)}] ${anime.title} ${Platform.lineTerminator}";
   }
 }

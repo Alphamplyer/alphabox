@@ -34,7 +34,7 @@ class _AnimeScreenState extends State<AnimeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  SelectableText(
                     widget.anime.title,
                     style: const TextStyle(
                       fontSize: 20,
@@ -42,7 +42,7 @@ class _AnimeScreenState extends State<AnimeScreen> {
                     ),
                   ),
                   const SizedBox(height: 8),
-                  Text(
+                  SelectableText(
                     widget.anime.description,
                     style: const TextStyle(
                       fontSize: 16,

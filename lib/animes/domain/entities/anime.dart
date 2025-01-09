@@ -18,9 +18,11 @@ class Anime {
   final AnimeGenre genres;
   final AnimationStudio studio;
   final AnimeRating rating;
+  final String? nautiljonUrl;
 
   bool get isNumberOfEpisodesKnown => animeDiffusion.numberOfEpisodes != -1;
   int get numberOfEpisodes => animeDiffusion.numberOfEpisodes;
+  bool get hasNautiljonUrl => nautiljonUrl != null && nautiljonUrl!.isNotEmpty;
 
   Anime({
     required this.title,
@@ -33,6 +35,7 @@ class Anime {
     required this.genres,
     required this.studio,
     required this.rating,
+    required this.nautiljonUrl,
   });
 
   /// Returns true if the anime is in the current season, false otherwise.
@@ -59,6 +62,6 @@ class Anime {
   @override
   @override
   String toString() {
-    return 'Anime(title: $title, alternativeTitle: $alternativeTitle, imageUrl: $imageUrl, description: $description, numberOfEpisodes: $numberOfEpisodes, animeDiffusion: ${animeDiffusion.toString()}, type: $type, adaptedFrom: ${adaptedFrom.toString()}, genres: [${genres.toString()}], studio: ${studio.toString()}, rating: ${rating.toString()})';
+    return 'Anime(title: $title, alternativeTitle: $alternativeTitle, imageUrl: $imageUrl, description: $description, numberOfEpisodes: $numberOfEpisodes, animeDiffusion: ${animeDiffusion.toString()}, type: $type, adaptedFrom: ${adaptedFrom.toString()}, genres: [${genres.toString()}], studio: ${studio.toString()}, rating: ${rating.toString()}, nautiljonUrl: $nautiljonUrl)';
   }
 }

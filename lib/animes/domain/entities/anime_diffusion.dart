@@ -20,7 +20,7 @@ class AnimeDiffusion {
 
   @override
   String toString() {
-    return 'AnimeDiffusion(start: $start, end: $end)';
+    return 'AnimeDiffusion(start: $start, end: $end, numberOfEpisodes: $numberOfEpisodes, isEndDateEstimated: $isEndDateEstimated)';
   }
 }
 

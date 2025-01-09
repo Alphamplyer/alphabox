@@ -2,10 +2,12 @@ import 'package:alphabox/animes/domain/enums/anime_season.dart';
 import 'package:alphabox/animes/presentation/configs/anime_sorting_methods.dart';
 import 'package:alphabox/animes/presentation/controllers/season_anime_list_controller.dart';
 import 'package:alphabox/animes/presentation/widgets/anime_list_view.dart';
+import 'package:alphabox/shared/configs/app_locale.dart';
 import 'package:alphabox/shared/enum/sorting_order.dart';
 import 'package:alphabox/shared/extensions/app_theme_extension.dart';
 import 'package:alphabox/shared/extensions/build_context_extension.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/link.dart';
 
 class SeasonAnimeListScreen extends StatefulWidget {
@@ -45,19 +47,32 @@ class _SeasonAnimeListScreenState extends State<SeasonAnimeListScreen> {
       endDrawer: Builder(
         builder: (context) {
           return Drawer(
-            child: ListView(
+            child: Column(
               children: [
-                ListTile(
-                  title: Text(context.appLocalizations.newAnimesSectionTitle),
-                  onTap: () {
-                    Scrollable.ensureVisible(_newAnimesKey.currentContext!);
-                    Scaffold.of(context).closeEndDrawer();
-                  },
+                Flexible(
+                  child: ListView(
+                    children: [
+                      ListTile(
+                        title: Text(context.appLocalizations.newAnimesSectionTitle),
+                        onTap: () {
+                          Scrollable.ensureVisible(_newAnimesKey.currentContext!);
+                          Scaffold.of(context).closeEndDrawer();
+                        },
+                      ),
+                      ListTile(
+                        title: Text(context.appLocalizations.continuingAnimesSectionTitle),
+                        onTap: () {
+                          Scrollable.ensureVisible(_continuingAnimesKey.currentContext!);
+                          Scaffold.of(context).closeEndDrawer();
+                        },
+                      ),
+                    ],
+                  ),
                 ),
                 ListTile(
-                  title: Text(context.appLocalizations.continuingAnimesSectionTitle),
+                  title: const Text("export final date ordered animes"), // TODO: add trad
                   onTap: () {
-                    Scrollable.ensureVisible(_continuingAnimesKey.currentContext!);
+                    _controller.exportFinalDateOrderedAnimes(context.read<AppLocale>().currentLocale, context.appLocalizations);
                     Scaffold.of(context).closeEndDrawer();
                   },
                 ),

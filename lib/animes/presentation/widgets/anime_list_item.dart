@@ -1,5 +1,6 @@
 
 import 'package:alphabox/animes/domain/entities/anime.dart';
+import 'package:alphabox/animes/domain/enums/anime_type.dart';
 import 'package:alphabox/animes/presentation/screens/anime_screen.dart';
 import 'package:alphabox/animes/presentation/widgets/anime_genres_view.dart';
 import 'package:alphabox/shared/extensions/app_theme_extension.dart';
@@ -40,7 +41,9 @@ class AnimeListItem extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8.0),
             decoration: BoxDecoration(
-              color: context.theme.appColors.secondaryColor,
+              color: anime.type == AnimeType.movie 
+                ? context.theme.appColors.primaryColor
+                : context.theme.appColors.secondaryColor,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -55,7 +58,7 @@ class AnimeListItem extends StatelessWidget {
                         MaterialPageRoute(builder: (context) => AnimeScreen(anime: anime)
                       ));
                     },
-                    child: Text(
+                    child: SelectableText(
                       anime.title,
                       style: const TextStyle(
                         fontSize: 18,
@@ -64,7 +67,7 @@ class AnimeListItem extends StatelessWidget {
                     ),
                   ),
                 ),                
-                Text(
+                SelectableText(
                   anime.alternativeTitle,
                   style: const TextStyle(
                     fontSize: 13,
@@ -112,7 +115,7 @@ class AnimeListItem extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              Text(
+                              SelectableText(
                                 anime.isNumberOfEpisodesKnown
                                   ? context.appLocalizations.episodeCount(anime.numberOfEpisodes)
                                   : context.appLocalizations.unknown,
@@ -129,7 +132,7 @@ class AnimeListItem extends StatelessWidget {
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              Text(anime.studio.name),
+                              SelectableText(anime.studio.name),
                               const SizedBox(width: 8),
                             ],
                           )
@@ -144,7 +147,7 @@ class AnimeListItem extends StatelessWidget {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text(context.appLocalizations.adaptationType(anime.adaptedFrom.name)),
+                          SelectableText(context.appLocalizations.adaptationType(anime.adaptedFrom.name)),
                         ],
                       ),
                     ],
@@ -212,7 +215,7 @@ class AnimeListItem extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text(
+                        SelectableText(
                           anime.animeDiffusion.start == null 
                             ? '?'
                             : DateFormat.yMd().format(anime.animeDiffusion.start!),
@@ -229,7 +232,7 @@ class AnimeListItem extends StatelessWidget {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text(formatFinalDate(context)),
+                        SelectableText(formatFinalDate(context)),
                         const SizedBox(width: 8),
                       ],
                     )
@@ -245,7 +248,7 @@ class AnimeListItem extends StatelessWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    Text(anime.rating.average == -1 ? 'N/A' : anime.rating.average.toString()),
+                    SelectableText(anime.rating.average == -1 ? 'N/A' : anime.rating.average.toString()),
                   ],
                 )
               ],

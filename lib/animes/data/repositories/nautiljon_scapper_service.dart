@@ -25,6 +25,7 @@ class NautiljonScapperService implements AnimeScrapperService {
       Anime anime = _parseAnime(elt);
       return anime;
     }).toList();
+    print("Animes count: ${_animes.length}");
     return _animes;
   }
 
@@ -34,9 +35,9 @@ class NautiljonScapperService implements AnimeScrapperService {
     final String imageUrl = _parseImageUrl(element);
     final String description = _parseDescription(element);
     final _NautiljonAnimeTopInfo topInfo = _parseTopInfo(element);
+    final String? nautiljonUrl = _parseNautiljonUrl(element);
     final AnimeDiffusionBuilder animeDiffusionBuilder = _parseAnimeDiffusion(element);
     animeDiffusionBuilder.withNumberOfEpisodes(topInfo.numberOfEpisodes);
-    print("$title: $animeDiffusionBuilder");
 
     return Anime(
       title: title,
@@ -49,6 +50,7 @@ class NautiljonScapperService implements AnimeScrapperService {
       genres: topInfo.genres,
       studio: topInfo.studio,
       rating: AnimeRating.defaultRating(),
+      nautiljonUrl: nautiljonUrl,
     );
   }
 
@@ -101,6 +103,20 @@ class NautiljonScapperService implements AnimeScrapperService {
       adaptedFrom: adaptedFrom,
       genres: genres,
     );
+  }
+
+  String? _parseNautiljonUrl(Element element) {
+    Element? animePageUrlElement = element.querySelector("div.title > h2 > a");
+    if (animePageUrlElement == null) {
+      return null;
+    }
+
+    String? animePageUrlElementHref = animePageUrlElement.attributes['href'];
+    if (animePageUrlElementHref == null) {
+      return null;
+    }
+
+    return '${NautiljonHelper.kNautiljonBaseUrl}/$animePageUrlElementHref';
   }
 
   AnimeType _parseType(Element element) {
