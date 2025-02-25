@@ -1,0 +1,174 @@
+{
+  "notationFields": [
+    {
+      "name": "title",
+      "label": "Titre",
+      "type": "text",
+      "isRequired": true
+    },
+    {
+      "name": "link",
+      "label": "Lien",
+      "type": "url",
+      "isRequired": false
+    },
+    {
+      "name": "avis",
+      "label": "Avis",
+      "type": "text",
+      "multiLine": true,
+      "isRequired": false
+    },
+    {
+      "name": "story_writing",
+      "label": "Écriture de l'histoire",
+      "type": "category",
+      "rated": true,
+      "children": [
+        {
+          "name": "story_writing__good_twists",
+          "label": "De bons rebondissements",
+          "type": "boolean",
+          "isRequired": true
+        },
+        {
+          "name": "story_writing__original_story",
+          "label": "Original",
+          "type": "boolean",
+          "isRequired": true
+        },
+        {
+          "name": "story_writing__entertaining_story",
+          "label": "Entraînant",
+          "type": "boolean",
+          "isRequired": true
+        },
+        {
+          "name": "story_writing__maintain_tension",
+          "label": "Maintient de la tension",
+          "type": "boolean",
+          "isRequired": true
+        },
+        {
+          "name": "story_writing__rushed_ending",
+          "label": "Fin rushé",
+          "type": "boolean",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "character_writing",
+      "label": "Écriture des Personnages",
+      "type": "category",
+      "rated": true,
+      "children": [
+        {
+          "name": "character_writing__characters_good_evolution",
+          "label": "Bonne évolution des personnages",
+          "type": "boolean",
+          "isRequired": true
+        },
+        {
+          "name": "character_writing__likeable_characters",
+          "label": "Personnages attachants",
+          "type": "boolean",
+          "isRequired": true
+        },
+        {
+          "name": "character_writing__all_character_evolve",
+          "label": "Tous les personnage évolue",
+          "type": "boolean",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "drawing_quality",
+      "label": "Qualité du Dessin",
+      "type": "category",
+      "rated": true,
+      "children": [
+        {
+          "name": "drawing_quality__consistant_drawing",
+          "label": "Consistant",
+          "type": "boolean",
+          "isRequired": true
+        },
+        {
+          "name": "drawing_quality__detailed_drawings",
+          "label": "Détailé",
+          "type": "boolean",
+          "isRequired": true
+        },
+        {
+          "name": "drawing_quality__good_drawn_characters",
+          "label": "Personnages bien dessinés",
+          "type": "boolean",
+          "isRequired": true
+        },
+        {
+          "name": "drawing_quality__good_drawn_decors",
+          "label": "Décors bien dessinés",
+          "type": "boolean",
+          "isRequired": true
+        },
+        {
+          "name": "drawing_quality__original_drawing_style",
+          "label": "Style original",
+          "type": "boolean",
+          "isRequired": true
+        },
+        {
+          "name": "drawing_quality__style_change_during_story",
+          "label": "Changement de style en cours de route",
+          "type": "boolean",
+          "isRequired": true
+        }
+      ]
+    },
+    {
+      "name": "other",
+      "label": "Autre",
+      "type": "category",
+      "children": [
+        {
+          "name": "other__we_wanted_more",
+          "label": "On en voulait plus",
+          "type": "boolean",
+          "isRequired": true
+        },
+        {
+          "name": "other__drag_on",
+          "label": "Traîne en longueur",
+          "type": "boolean",
+          "isRequired": true
+        },
+        {
+          "name": "other__side_stories",
+          "label": "A des side-stories",
+          "type": "boolean",
+          "isRequired": true
+        },
+        {
+          "name": "other__can_be_read_in_oneshot",
+          "label": "Peu se lire en oneshot",
+          "type": "boolean",
+          "isRequired": true
+        },
+        {
+          "name": "other__feels_like_missed_parts",
+          "label": "Sentiment d'avoir manqué des parties",
+          "type": "boolean",
+          "isRequired": true
+        },
+        {
+          "name": "other__feels_like_an_unfinished_story",
+          "label": "Sentiment d'histoire pas finie",
+          "type": "boolean",
+          "isRequired": true
+        }
+      ]
+    }
+  ]
+}

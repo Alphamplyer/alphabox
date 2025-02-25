@@ -1,0 +1,1 @@
+const List<double> kFontSizesOrderedByIdentLevel = [36, 30, 24, 20, 18, 16, 14, 12, 10, 8];
